@@ -11,6 +11,10 @@
   font-family: "Avenir";
   src: url("/assets/fonts/AvenirLTStd-Book.otf");
 }
+@font-face {
+  font-family: "Avenir-Bold";
+  src: url("/assets/fonts/AvenirLTStd-Black.otf");
+}
 body {
   margin: 0px;
   padding: 0px;
