@@ -38,3 +38,5 @@ Start the server
 ## Screenshots
 
 ![App Screenshot](https://github.com/shubhamkhuva/esri-arcgis-stencil-calcite/blob/main/screenshot/screen-1.png?raw=true)
+
+![App Screenshot](https://github.com/shubhamkhuva/esri-arcgis-stencil-calcite/blob/main/screenshot/screen-2.png?raw=true)
