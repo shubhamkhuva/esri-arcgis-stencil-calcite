@@ -20,19 +20,19 @@ Clone the project
 Go to the project directory
 
 ```bash
-  cd my-project
+  cd esri-arcgis-stencil-calcite
 ```
 
 Install dependencies
 
 ```bash
-  npm install
+  yarn install
 ```
 
 Start the server
 
 ```bash
-  npm run start
+  yarn start
 ```
 
 ## Screenshots

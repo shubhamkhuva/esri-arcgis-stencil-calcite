@@ -200,6 +200,7 @@ const store = createStore({
   loadingServicesDetails: false,
   loadingServicesImage: false,
 });
+
 const dispose = store.dispose;
 const state = store.state;
 const reset = store.reset;
@@ -219,12 +220,10 @@ async function request(endPoint, method = 'GET') {
     let response = await fetch(`${_apiHost}${endPoint}`, options);
     if (!response.ok) {
       return null;
-    }
-    else {
+    } else {
       return response.json();
     }
-  }
-  catch (err) {
+  } catch (err) {
     return null;
   }
 }
@@ -253,8 +252,8 @@ let AppHome = class {
   async getServices() {
     try {
       let response = await request(_endPoints.GET_SERVICES_LIST);
-      if (response['services']) {
-        this.services = getFilteredArray(response['services'], 'type', 'ImageServer');
+      if (response["services"]) {
+        this.services = getFilteredArray(response["services"], "type", "ImageServer");
       }
       state.loadingServicesList = false;
     }
@@ -266,10 +265,10 @@ let AppHome = class {
     try {
       state.loadingServicesDetails = true;
       state.loadingServicesImage = true;
-      let response = await request(_endPoints.GET_SERVICES_DETAILS.replace('serviceName', name));
-      if (response['description']) {
-        state.servicesDescription = response['description'];
-        this.getImageFromExtent(response['fullExtent']);
+      let response = await request(_endPoints.GET_SERVICES_DETAILS.replace("serviceName", name));
+      if (response["description"]) {
+        state.servicesDescription = response["description"];
+        this.getImageFromExtent(response["fullExtent"]);
       }
       state.loadingServicesDetails = false;
     }
@@ -279,8 +278,8 @@ let AppHome = class {
   }
   async getImageFromExtent(fullExtent) {
     try {
-      let response = await request(_endPoints.GET_SERVICES_IMAGE.replace('extent', `${fullExtent.xmin},${fullExtent.ymin},${fullExtent.xmax},${fullExtent.ymax}`).replace('serviceName', state.servicesName));
-      if (response['href']) {
+      let response = await request(_endPoints.GET_SERVICES_IMAGE.replace("extent", `${fullExtent.xmin},${fullExtent.ymin},${fullExtent.xmax},${fullExtent.ymax}`).replace("serviceName", state.servicesName));
+      if (response["href"]) {
         state.imageUrl = response.href;
       }
       state.loadingServicesImage = false;
@@ -290,9 +289,9 @@ let AppHome = class {
     }
   }
   render() {
-    return (h("div", { class: "app-home" }, state.loadingServicesList ? (h("div", { class: "servicesGrids" }, h("div", { class: "servicesBox" }, h("div", { class: "loadingCard" })), h("div", { class: "servicesBox" }, h("div", { class: "loadingCard" })), h("div", { class: "servicesBox" }, h("div", { class: "loadingCard" })), h("div", { class: "servicesBox" }, h("div", { class: "loadingCard" })))) : (h("div", { class: "servicesGrids" }, this.services.map(item => {
+    return (h("div", { class: "app-home" }, state.loadingServicesList ? (h("div", { class: "servicesGrids" }, h("div", { class: "servicesBox" }, h("div", { class: "loadingCard" })), h("div", { class: "servicesBox" }, h("div", { class: "loadingCard" })), h("div", { class: "servicesBox" }, h("div", { class: "loadingCard" })), h("div", { class: "servicesBox" }, h("div", { class: "loadingCard" })))) : (h("div", { class: "servicesGrids" }, this.services.map((item) => {
       return (h("calcite-card", { class: "servicesBox" }, h("span", { slot: "title" }, item.name), h("span", { slot: "subtitle" }, "Image Server"), h("calcite-chip", { slot: "footer-end", value: "calcite chip", icon: "view-visible", onClick: () => this.openModal(item.name) }, "View Details")));
-    }))), state.modal && (h("calcite-modal", { "aria-labelledby": "modal-title", id: "example-modal", open: state.modal, closeButtonDisabled: true, fullScreen: true }, h("div", { slot: "header", id: "modal-title" }, state.servicesName), h("div", { slot: "content" }, h("calcite-label", { class: "fontBold" }, "Description"), state.loadingServicesDetails ? h("div", { class: "loadingCard" }) : h("div", { innerHTML: state.servicesDescription }), h("calcite-label", { class: "fontBold" }, "Image"), h("div", { class: 'imageDiv' }, state.loadingServicesImage ? h("div", { class: "loadingImage" }) : h("img", { src: state.imageUrl }))), h("calcite-button", { slot: "back", kind: "neutral", width: "full", onClick: () => (state.modal = false) }, "Close")))));
+    }))), state.modal && (h("calcite-modal", { "aria-labelledby": "modal-title", id: "example-modal", open: state.modal, closeButtonDisabled: true, fullScreen: true }, h("div", { slot: "header", id: "modal-title" }, state.servicesName), h("div", { slot: "content" }, h("calcite-label", { class: "fontBold" }, "Description"), state.loadingServicesDetails ? (h("div", { class: "loadingCard" })) : (h("div", { innerHTML: state.servicesDescription })), h("calcite-label", { class: "fontBold" }, "Image"), h("div", { class: "imageDiv" }, state.loadingServicesImage ? (h("div", { class: "loadingImage" })) : (h("img", { src: state.imageUrl })))), h("calcite-button", { slot: "back", kind: "neutral", width: "full", onClick: () => (state.modal = false) }, "Close")))));
   }
 };
 AppHome.style = appHomeCss;

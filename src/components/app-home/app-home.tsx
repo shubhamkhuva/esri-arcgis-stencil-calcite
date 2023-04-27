@@ -1,13 +1,13 @@
-import { Component, State, h } from '@stencil/core';
-import { ServicesItem } from '../../app-types';
-import { state } from '../../utils/app-store';
-import { _apiHost, _endPoints } from '../../utils/constants';
-import { request } from '../../assets/fetch';
-import { getFilteredArray } from '../../utils/helper';
+import { Component, State, h } from "@stencil/core";
+import { ServicesItem } from "../../app-types";
+import { state } from "../../utils/app-store";
+import { _apiHost, _endPoints } from "../../utils/constants";
+import { request } from "../../assets/fetch";
+import { getFilteredArray } from "../../utils/helper";
 
 @Component({
-  tag: 'app-home',
-  styleUrl: 'app-home.scss',
+  tag: "app-home",
+  styleUrl: "app-home.scss",
   shadow: true,
 })
 export class AppHome {
@@ -28,8 +28,12 @@ export class AppHome {
   async getServices() {
     try {
       let response = await request(_endPoints.GET_SERVICES_LIST);
-      if (response['services']) {
-        this.services = getFilteredArray(response['services'], 'type', 'ImageServer');
+      if (response["services"]) {
+        this.services = getFilteredArray(
+          response["services"],
+          "type",
+          "ImageServer"
+        );
       }
       state.loadingServicesList = false;
     } catch (e) {
@@ -41,10 +45,12 @@ export class AppHome {
     try {
       state.loadingServicesDetails = true;
       state.loadingServicesImage = true;
-      let response = await request(_endPoints.GET_SERVICES_DETAILS.replace('serviceName', name));
-      if (response['description']) {
-        state.servicesDescription = response['description'];
-        this.getImageFromExtent(response['fullExtent']);
+      let response = await request(
+        _endPoints.GET_SERVICES_DETAILS.replace("serviceName", name)
+      );
+      if (response["description"]) {
+        state.servicesDescription = response["description"];
+        this.getImageFromExtent(response["fullExtent"]);
       }
       state.loadingServicesDetails = false;
     } catch (e) {
@@ -54,9 +60,12 @@ export class AppHome {
   async getImageFromExtent(fullExtent) {
     try {
       let response = await request(
-        _endPoints.GET_SERVICES_IMAGE.replace('extent', `${fullExtent.xmin},${fullExtent.ymin},${fullExtent.xmax},${fullExtent.ymax}`).replace('serviceName', state.servicesName),
+        _endPoints.GET_SERVICES_IMAGE.replace(
+          "extent",
+          `${fullExtent.xmin},${fullExtent.ymin},${fullExtent.xmax},${fullExtent.ymax}`
+        ).replace("serviceName", state.servicesName)
       );
-      if (response['href']) {
+      if (response["href"]) {
         state.imageUrl = response.href;
       }
       state.loadingServicesImage = false;
@@ -84,12 +93,17 @@ export class AppHome {
           </div>
         ) : (
           <div class="servicesGrids">
-            {this.services.map(item => {
+            {this.services.map((item) => {
               return (
                 <calcite-card class="servicesBox">
                   <span slot="title">{item.name}</span>
                   <span slot="subtitle">Image Server</span>
-                  <calcite-chip slot="footer-end" value="calcite chip" icon="view-visible" onClick={() => this.openModal(item.name)}>
+                  <calcite-chip
+                    slot="footer-end"
+                    value="calcite chip"
+                    icon="view-visible"
+                    onClick={() => this.openModal(item.name)}
+                  >
                     View Details
                   </calcite-chip>
                 </calcite-card>
@@ -99,18 +113,39 @@ export class AppHome {
         )}
 
         {state.modal && (
-          <calcite-modal aria-labelledby="modal-title" id="example-modal" open={state.modal} closeButtonDisabled={true} fullScreen>
+          <calcite-modal
+            aria-labelledby="modal-title"
+            id="example-modal"
+            open={state.modal}
+            closeButtonDisabled={true}
+            fullScreen
+          >
             <div slot="header" id="modal-title">
               {state.servicesName}
             </div>
             <div slot="content">
               <calcite-label class="fontBold">Description</calcite-label>
-              {state.loadingServicesDetails ? <div class="loadingCard"></div> : <div innerHTML={state.servicesDescription}></div>}
+              {state.loadingServicesDetails ? (
+                <div class="loadingCard"></div>
+              ) : (
+                <div innerHTML={state.servicesDescription}></div>
+              )}
               <calcite-label class="fontBold">Image</calcite-label>
-              <div class={'imageDiv'}>{state.loadingServicesImage ? <div class="loadingImage"></div> : <img src={state.imageUrl} />}</div>
+              <div class={"imageDiv"}>
+                {state.loadingServicesImage ? (
+                  <div class="loadingImage"></div>
+                ) : (
+                  <img src={state.imageUrl} />
+                )}
+              </div>
             </div>
 
-            <calcite-button slot="back" kind="neutral" width="full" onClick={() => (state.modal = false)}>
+            <calcite-button
+              slot="back"
+              kind="neutral"
+              width="full"
+              onClick={() => (state.modal = false)}
+            >
               Close
             </calcite-button>
           </calcite-modal>
