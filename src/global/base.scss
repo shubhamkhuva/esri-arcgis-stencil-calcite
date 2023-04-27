@@ -1,0 +1,15 @@
+// Fonts
+$font-path: '/assets/fonts' !default;
+@font-face {
+  font-family: 'Avenir';
+  src: url('#{$font-path}/AvenirLTStd-Book.otf');
+}
+@font-face {
+  font-family: 'Avenir-Bold';
+  src: url('#{$font-path}/AvenirLTStd-Black.otf');
+}
+$regular-font: 'Avenir';
+$bold-font: 'Avenir-Bold';
+// Colors
+$base-color: #2d2670;
+$white-color: #fff;
